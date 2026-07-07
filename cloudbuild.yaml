@@ -1,0 +1,40 @@
+substitutions:
+  _REGION: us-central1
+  _SERVICE: cloud-image-gallery-api
+  _IMAGE: us-central1-docker.pkg.dev/$PROJECT_ID/cloud-image-gallery/api:$SHORT_SHA
+  _BUCKET: $PROJECT_ID-images-storage
+  _FIRESTORE_COLLECTION: images
+  _CORS_ORIGIN: https://your-frontend-domain.example
+  _SERVICE_ACCOUNT: cloud-run-image-service@$PROJECT_ID.iam.gserviceaccount.com
+
+steps:
+  - name: gcr.io/cloud-builders/docker
+    args:
+      - build
+      - -t
+      - $_IMAGE
+      - .
+
+  - name: gcr.io/cloud-builders/docker
+    args:
+      - push
+      - $_IMAGE
+
+  - name: gcr.io/google.com/cloudsdktool/cloud-sdk:slim
+    entrypoint: gcloud
+    args:
+      - run
+      - deploy
+      - $_SERVICE
+      - --image=$_IMAGE
+      - --region=$_REGION
+      - --platform=managed
+      - --service-account=$_SERVICE_ACCOUNT
+      - --allow-unauthenticated
+      - --set-env-vars=GCS_BUCKET_NAME=$_BUCKET,FIRESTORE_COLLECTION=$_FIRESTORE_COLLECTION,CORS_ORIGIN=$_CORS_ORIGIN,SIGNED_URL_TTL_MINUTES=30,MAX_FILE_SIZE_MB=5
+
+images:
+  - $_IMAGE
+
+options:
+  logging: CLOUD_LOGGING_ONLY

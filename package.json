@@ -1,0 +1,22 @@
+{
+  "name": "cloud-image-gallery-platform",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Production-ready Google Cloud image upload and gallery platform.",
+  "workspaces": [
+    "backend",
+    "frontend"
+  ],
+  "scripts": {
+    "backend:dev": "npm --workspace backend run dev",
+    "backend:start": "npm --workspace backend start",
+    "backend:test": "npm --workspace backend test",
+    "frontend:dev": "npm --workspace frontend run dev",
+    "frontend:build": "npm --workspace frontend run build",
+    "test": "npm run backend:test",
+    "build": "npm run frontend:build"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

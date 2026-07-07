@@ -1,0 +1,5 @@
+project_id      = "your-gcp-project-id"
+region          = "us-central1"
+bucket_name     = "your-gcp-project-id-images-storage"
+container_image = "us-central1-docker.pkg.dev/your-gcp-project-id/cloud-image-gallery/api:latest"
+frontend_origin = "https://your-frontend-domain.example"
