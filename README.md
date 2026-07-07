@@ -170,6 +170,24 @@ Then open `http://localhost:5173`.
 
 The app will upload, preview, list, search, and delete images without Google Cloud credentials. To switch back to Google Cloud later, set `STORAGE_DRIVER=gcp`, `METADATA_DRIVER=firestore`, and configure `GOOGLE_CLOUD_PROJECT` plus `GCS_BUCKET_NAME` in `backend/.env`.
 
+## Vercel Import
+
+The repository includes a root `vercel.json` for Vercel's multi-service import:
+
+- `frontend` is a Vite service rooted at `frontend/`.
+- `backend` is an Express service rooted at `backend/`.
+- `/api/*` is routed to the backend service.
+- all other paths are routed to the frontend service.
+
+In the Vercel import screen:
+
+- keep the project root at the repository root, not only `backend/`
+- use the included `vercel.json`
+- set frontend API env to `VITE_API_BASE_URL=/api` if Vercel asks
+- set backend env to `STORAGE_DRIVER=local`, `METADATA_DRIVER=local`, `LOCAL_DATA_DIR=/tmp/image-gallery`, and `PUBLIC_API_BASE_URL=/api` for a temporary free demo
+
+Vercel local file storage is temporary. Uploaded files can disappear after redeploys or instance restarts. Use Google Cloud Storage, Firebase/Supabase Storage, or Vercel Blob for persistent hosted uploads.
+
 ## Google Cloud Setup
 
 The fastest Windows setup path is the included PowerShell script:
